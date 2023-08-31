@@ -9,7 +9,7 @@ function App() {
     const unsplashKey = "API_KEY";
     const collectionId = 4809869;
     const data = await fetch(
-      `https://api.unsplash.com/photos/random?collections=${collectionId}&client_id=${unsplashKey}&w=1920&h=1080&crop=entropy&fit=crop`
+      `https://api.unsplash.com/photos/random?collections=${collectionId}&client_id=${unsplashKey}&w=1920&h=1080&crop=entropy&fit=crop&auto=format&q=70&fm=jpg`
     );
     const dataJ = await data.json();
     console.log(dataJ);
@@ -22,7 +22,6 @@ function App() {
     try {
       const response = await fetch(adviceUrl);
       const json = await response.json();
-      console.log(json.slip.advice);
       setAdvice(json.slip.advice);
     } catch (error) {
       console.log("error", error);
@@ -35,15 +34,20 @@ function App() {
   }, []);
 
   return (
-    <div className="App">
-      {res && 
-    <img
-      className="col-3 img-fluid img-thumbnail"
-      src={res.urls.small}
-      alt="val.alt_description"
-    />}
-      {advice}
-    </div>
+    <>
+    {res && advice &&
+      <div className="App fade-in-image" style={{backgroundImage: `url(${res.urls.full})`}}>
+        <div className="text-container">
+          <h1 className="text">
+            {advice}
+          </h1>
+        </div>
+      </div>
+    }
+    {!res && 
+      <div>Loading</div>
+    }
+    </>
   );
 }
 
