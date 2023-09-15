@@ -5,7 +5,7 @@
   background-size: cover;
 }
 
-.fade-in-image { animation: fadeIn 3s; }
+.fade-in-image { animation: fadeIn 1s; }
 
 @keyframes fadeIn {
   0% { opacity: 0; }
