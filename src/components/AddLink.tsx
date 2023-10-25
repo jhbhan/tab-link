@@ -5,12 +5,11 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import Button from '@mui/material/Button';
 import React from 'react';
-import {LinkModel} from '../models/Models';
 
 interface AddLinkProps {
     isOpen: boolean;
     handleClose: () => void;
-    handleAdd: (model: LinkModel) => void;
+    handleAdd: (url: string, title: string) => void;
 }
 export const AddLink:React.FunctionComponent<AddLinkProps> = (props:AddLinkProps) => {
     const [title, setTitle] = React.useState<string>('');
@@ -36,7 +35,7 @@ export const AddLink:React.FunctionComponent<AddLinkProps> = (props:AddLinkProps
     </DialogContent>
     <DialogActions>
       <Button onClick={props.handleClose}>Cancel</Button>
-      <Button onClick={() => props.handleAdd({title: title, url: url})}>Add</Button>
+      <Button onClick={() => props.handleAdd(url, title)}>Add</Button>
     </DialogActions>
   </Dialog>;
 }

@@ -14,7 +14,7 @@ interface LinkProps {
 export const Links: React.FunctionComponent<LinkProps> = (props:LinkProps) => {
     return <div className="card-container">
         {_.map(props.linkList, (link) => {
-            return <LinkCard title={link.title} url={link.url}/>;
+            return <LinkCard {...link}/>;
         })}
     </div>;
 }

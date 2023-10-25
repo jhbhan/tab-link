@@ -3,14 +3,17 @@
 import React, { useEffect, useState } from "react";
 import Fab from '@mui/material/Fab';
 import AddIcon from '@mui/icons-material/Add';
-import {AddLink} from '../components/AddLink';
+import { AddLink } from '../components/AddLink';
 import '../App.css';
 import { LinkModel } from "../models/Models";
 import { Links } from "../components/Links";
 import _ from 'underscore';
 
-export function Home () {
+import { loadLinks, getUserId, updateLink } from '../services/firebaseReadWriteService';
+
+export const Home = () => {
   const [userEmail, setUserEmail] = React.useState("");
+  const [userId, setUserId] = React.useState("");
   const [advice, setAdvice] = React.useState("");
   const [pic, setPic] = useState<any>(null);
   const [linkList, setLinks] = useState<LinkModel[]>([]);
@@ -18,8 +21,19 @@ export function Home () {
   const [open, setOpen] = React.useState(false);
 
   React.useEffect(() => {
-    chrome.identity.getProfileUserInfo((user: chrome.identity.UserInfo) => {
+    chrome.identity.getProfileUserInfo(async (user: chrome.identity.UserInfo) => {
       setUserEmail(user.email);
+      getUserId(user.email)
+        .then((returnUserId: string) => {
+          setUserId(returnUserId);
+          loadLinks(returnUserId)
+            .then((retval: any) => {
+              console.log(retval);
+            })
+            .catch((err: any) => {
+              console.log(err);
+            });
+        });
     });
   },[]);
 
@@ -31,9 +45,19 @@ export function Home () {
     setOpen(false);
   };
   
-  const handleAdd = (model: LinkModel) => {
-    const updatedLinks = [...linkList, model];
-    setLinks(updatedLinks);
+  const handleAdd = async (url: string, title: string) => {
+    const newLink: LinkModel = {
+      url: url, title: title, groupOnly: false, id: undefined
+    };
+    updateLink(newLink, userId)
+      .then((retval: any) => {
+        console.log('success!');
+        console.log(retval);
+      })
+      .catch((error: any) => {
+        console.log('error');
+        console.log(error);
+      });
     setOpen(false);
   };
 
