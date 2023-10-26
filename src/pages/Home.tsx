@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import Fab from '@mui/material/Fab';
 import AddIcon from '@mui/icons-material/Add';
 import { AddLink } from '../components/AddLink';
-import '../App.css';
+import '../App.scss';
 import { LinkModel } from "../models/Models";
 import { Links } from "../components/Links";
 import _ from 'underscore';

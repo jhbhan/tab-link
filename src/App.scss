@@ -27,4 +27,12 @@
 
 .card-container {
   display: flex;
+
+  .link {
+    width: 250px;
+  
+    .link-card-action-buttons {
+      display: flex;;
+    }
+  }
 }
