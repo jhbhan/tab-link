@@ -1,5 +1,5 @@
 import { getDoc, getDocs, query, addDoc, where, updateDoc, collection, doc } from 'firebase/firestore';
-import { db } from './firebaseBaseService';
+import { db, converter } from './firebaseBaseService';
 import { LinkModel } from "../models/Models";
 
 export const getUserId = async (userEmail:string) => {
@@ -14,13 +14,16 @@ export const getUserId = async (userEmail:string) => {
 }
 
 export const loadLinks = async (userId:string) => {
-    const q = query(collection(db, "users", userId, "links"));
+    const q = query(collection(db, "users", userId, "links").withConverter(converter));
     const multiple = await getDocs(q);
 
+    const links:LinkModel[] = [];
     multiple.forEach((doc) => {
         // doc.data() is never undefined for query doc snapshots
-        console.log(doc.data());
+        const ret = doc.data();
+        links.push({id: doc.id, title: ret.title, url:ret.url, groupOnly: ret.groupOnly })
       });
+    return links;
 }
 
 export const updateLink = async (newLink: LinkModel, userId: string) => {

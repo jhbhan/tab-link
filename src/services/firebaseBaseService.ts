@@ -1,6 +1,7 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { getFirestore } from "firebase/firestore";
+import { QueryDocumentSnapshot, getFirestore } from "firebase/firestore";
+import { LinkModel } from "../models/Models";
 import "firebase/auth";
 
 // TODO: Add SDKs for Firebase products that you want to use
@@ -17,6 +18,12 @@ const firebaseConfig = {
   appId: "1:333777901538:web:85d128d9717b10e9b1cbbb",
   measurementId: "G-WKKQW0F61M"
 };
+
+export const converter = {
+  toFirestore: (data: LinkModel) => data,
+  fromFirestore: (snap: QueryDocumentSnapshot) =>
+    snap.data() as LinkModel
+}
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
