@@ -5,37 +5,66 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import Button from '@mui/material/Button';
 import React from 'react';
+import { FormControl, Input, Chip } from '@mui/material';
 
 interface AddLinkProps {
-    isOpen: boolean;
-    handleClose: () => void;
-    handleAdd: (url: string, title: string) => void;
+  isOpen: boolean;
+  handleClose: () => void;
+  handleAdd: (urls: string[], title: string) => void;
 }
-export const AddLink:React.FunctionComponent<AddLinkProps> = (props:AddLinkProps) => {
-    const [title, setTitle] = React.useState<string>('');
-    const [url, setUrl] = React.useState<string>('');
+export const AddLink: React.FunctionComponent<AddLinkProps> = (props: AddLinkProps) => {
+  const [title, setTitle] = React.useState<string>('');
+  const [values, setValues] = React.useState<string[]>([]);
+  const [currValue, setCurrValue] = React.useState<string>('');
 
-    return <Dialog open={props.isOpen}>
+  const handleKeyUp = (e: any) => {
+    if (e.keyCode == 32) {
+      setValues((oldState) => [...oldState, e.target.value]);
+      setCurrValue('');
+    }
+  };
+
+  const handleChange = (e: any) => {
+    setCurrValue(e.target.value);
+  };
+
+  const handleDelete = (item: string, index: number) => {
+    let arr = [...values]
+    arr.splice(index, 1)
+    setValues(arr)
+  }
+
+  return <Dialog open={props.isOpen} sx={{'.MuiPaper-root': {width: '400px'}}}>
     <DialogTitle>Add New Link</DialogTitle>
     <DialogContent>
       <TextField
-        margin="dense"
-        label="Link Name"
+        margin='dense'
+        label='Link Name'
         fullWidth
-        variant="standard"
+        variant='standard'
         onChange={(e) => setTitle(e.target.value)}
       />
-      <TextField
-        margin="dense"
-        label="URL"
-        fullWidth
-        variant="standard"
-        onChange={(e) => setUrl(e.target.value)}
-      />
+      <FormControl
+        sx={{
+          '&.MuiFormControl-root': {
+            width: '100%'
+          }
+        }}>
+        <div className='url-chip-container'>
+          {values.map((item, index) => (
+            <Chip className='url-chip' size='small' onDelete={() => handleDelete(item, index)} label={item} />
+          ))}
+        </div>
+        <Input
+          value={currValue}
+          onChange={handleChange}
+          onKeyDown={handleKeyUp}
+        />
+      </FormControl>
     </DialogContent>
     <DialogActions>
       <Button onClick={props.handleClose}>Cancel</Button>
-      <Button onClick={() => props.handleAdd(url, title)}>Add</Button>
+      <Button onClick={() => props.handleAdd(values, title)}>Add</Button>
     </DialogActions>
   </Dialog>;
 }

@@ -50,9 +50,9 @@ export const Home = () => {
     });
   },[]);
   
-  const handleAdd = async (url: string, title: string) => {
+  const handleAdd = async (url: string[], title: string) => {
     const newLink: LinkModel = {
-      url: url, title: title, groupOnly: false, id: undefined
+      urls: url, title: title, groupOnly: false, id: undefined
     };
     updateLink(newLink, userId)
       .then(() => {

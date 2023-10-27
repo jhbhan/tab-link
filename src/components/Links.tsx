@@ -25,12 +25,20 @@ export const Links: React.FunctionComponent<LinkProps> = (props:LinkProps) => {
 }
 
 const LinkCard: React.FunctionComponent<LinkModel> = (props: LinkModel) => {
-    const formattedUrl = () => {
-        if (!props.url.startsWith('https://') && !props.url.startsWith('http://')) {
-            return 'https://' + props.url;
+    const formattedUrl = (url: string) => {
+        if (!url.startsWith('https://') && !url.startsWith('http://')) {
+            return 'https://' + url;
           }
-          return props.url;
-    }
+          return url;
+    };
+
+    const openLink = () => {
+      _.forEach(props.urls, (url: string) => {
+        chrome.tabs.create({
+            url: formattedUrl(url)
+        });
+      });
+    };
 
     return <Card className ="link-card" sx={{ maxWidth: 345, margin: "12px" }}>
       <CardContent>
@@ -39,7 +47,7 @@ const LinkCard: React.FunctionComponent<LinkModel> = (props: LinkModel) => {
         </Typography>
       </CardContent>
       <CardActions className="link-card-action-buttons">
-        <Button href={formattedUrl()} target="_blank" >Open</Button>
+        <Button onClick={() => openLink()}>Open</Button>
         <Button>Edit</Button>
         <Button>Delete</Button>
       </CardActions>

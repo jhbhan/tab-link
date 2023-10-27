@@ -1,7 +1,7 @@
 export interface LinkModel {
     id: string | undefined,
     title: string,
-    url: string,
+    urls: string[],
     groupOnly: boolean
 }
 

@@ -21,7 +21,7 @@ export const loadLinks = async (userId:string) => {
     multiple.forEach((doc) => {
         // doc.data() is never undefined for query doc snapshots
         const ret = doc.data();
-        links.push({id: doc.id, title: ret.title, url:ret.url, groupOnly: ret.groupOnly })
+        links.push({id: doc.id, title: ret.title, urls:ret.urls, groupOnly: ret.groupOnly })
       });
     return links;
 }
@@ -30,7 +30,7 @@ export const updateLink = async (newLink: LinkModel, userId: string) => {
     if (newLink.id) {
         updateDoc(doc(db, `users/${userId}/links/${newLink.id}`), {
             title: newLink.title,
-            url: newLink.url,
+            urls: newLink.urls,
         }).then((retval: any) => {
             console.log(retval);
         }).catch((err: any) => {
@@ -40,7 +40,7 @@ export const updateLink = async (newLink: LinkModel, userId: string) => {
     else {
         addDoc(collection(db, 'users', userId, 'links'), {
             title: newLink.title,
-            url: newLink.url,
+            urls: newLink.urls,
         }).then((retval: any) => {
             console.log(retval);
         }).catch((err: any) => {
