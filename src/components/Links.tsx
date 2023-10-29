@@ -29,7 +29,7 @@ const LinkCard: React.FunctionComponent<LinkModel> = (props: LinkModel) => {
         if (!url.startsWith('https://') && !url.startsWith('http://')) {
             return 'https://' + url;
           }
-          return url;
+        return url;
     };
 
     const openLink = () => {

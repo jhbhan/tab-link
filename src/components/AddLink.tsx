@@ -19,7 +19,7 @@ export const AddLink: React.FunctionComponent<AddLinkProps> = (props: AddLinkPro
 
   const handleKeyUp = (e: any) => {
     if (e.keyCode == 32) {
-      setValues((oldState) => [...oldState, e.target.value]);
+      setValues((oldState) => [...oldState, e.target.value.replace(' ','')]);
       setCurrValue('');
     }
   };
@@ -32,6 +32,12 @@ export const AddLink: React.FunctionComponent<AddLinkProps> = (props: AddLinkPro
     let arr = [...values]
     arr.splice(index, 1)
     setValues(arr)
+  }
+
+  const handleAdd = () => {
+    props.handleAdd(values, title);
+    setValues([]);
+    setCurrValue("");
   }
 
   return <Dialog open={props.isOpen} sx={{'.MuiPaper-root': {width: '400px'}}}>
@@ -64,7 +70,7 @@ export const AddLink: React.FunctionComponent<AddLinkProps> = (props: AddLinkPro
     </DialogContent>
     <DialogActions>
       <Button onClick={props.handleClose}>Cancel</Button>
-      <Button onClick={() => props.handleAdd(values, title)}>Add</Button>
+      <Button onClick={() => {handleAdd()}}>Add</Button>
     </DialogActions>
   </Dialog>;
 }
