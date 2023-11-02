@@ -1,4 +1,4 @@
-import { getDoc, getDocs, query, addDoc, where, updateDoc, collection, doc } from 'firebase/firestore';
+import { deleteDoc, getDocs, query, addDoc, where, updateDoc, collection, doc } from 'firebase/firestore';
 import { db, converter } from './firebaseBaseService';
 import { LinkModel } from "../models/Models";
 
@@ -48,6 +48,7 @@ export const updateLink = async (newLink: LinkModel, userId: string) => {
         });
     }
 }
-export const deleteLink = async (newLink: LinkModel, userEmail: string) => {
-  return;
+export const deleteLink = async (linkId: string, userId: string) => {
+    deleteDoc(doc(db, `users/${userId}/links/${linkId}`));
+    return;
 }

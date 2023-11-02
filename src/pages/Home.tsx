@@ -1,6 +1,6 @@
 /* global chrome */
 
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Fab from '@mui/material/Fab';
 import AddIcon from '@mui/icons-material/Add';
 import { AddLink } from '../components/AddLink';
@@ -11,8 +11,10 @@ import _ from 'underscore';
 
 import { loadLinks, getUserId, updateLink } from '../services/firebaseReadWriteService';
 import { fetchAdvice, fetchImage } from "../services/quotesService";
+import { AppContext } from './appContext';
 
 export const Home = () => {
+  const appContext = useContext(AppContext);
   const [userEmail, setUserEmail] = React.useState("");
   const [userId, setUserId] = React.useState("");
   const [advice, setAdvice] = React.useState("");
@@ -65,6 +67,9 @@ export const Home = () => {
     setOpen(false);
   };
 
+  const handleChange = () => {
+    getLinks(userId);
+  }
   const fabStyling = {position: 'absolute', right: '24px', bottom:'24px'};
 
   useEffect(() => {
@@ -73,7 +78,7 @@ export const Home = () => {
   }, []);
 
   return (
-    <>
+    <AppContext.Provider value={{userId:userId, userEmail:userEmail}}>
     {pic && advice &&
       <div className="App fade-in-image" style={{backgroundImage: `url(${pic.urls.full})`}}>
         <div className="text-container">
@@ -81,13 +86,13 @@ export const Home = () => {
             {advice}
           </h1>
         </div>
-        <Links linkList={linkList} />
+        <Links linkList={linkList} handleChange={handleChange}/>
         <AddLink isOpen={open} handleClose={() => {setOpen(false);}} handleAdd={handleAdd} />
           <Fab disabled={_.isEmpty(userEmail)}sx={fabStyling} className="add-button" color="primary" aria-label="add" onClick={()=>{setOpen(true);}}>
             <AddIcon />
           </Fab>
       </div>
     }
-    </>
+    </AppContext.Provider>
   );
 }
