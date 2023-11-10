@@ -18,7 +18,7 @@ export const Home = () => {
   const [userEmail, setUserEmail] = React.useState("");
   const [userId, setUserId] = React.useState("");
   const [advice, setAdvice] = React.useState("");
-  const [pic, setPic] = useState<any>(null);
+  const [pic, setPic] = useState<string>("");
   const [linkList, setLinks] = useState<LinkModel[]>([]);
 
   const [open, setOpen] = React.useState(false);
@@ -34,14 +34,15 @@ export const Home = () => {
   };
 
   React.useEffect(() => {
-    fetchAdvice()
-      .then((ret:any) => {
-        setAdvice(ret);
-      });
-    fetchImage()
-      .then((ret:any) => {
-        setPic(ret);
-      });
+    (async () => {
+      const [advice, image] = await Promise.all([
+        fetchAdvice(),
+        fetchImage()
+      ]);
+      setAdvice(advice);
+      setPic(image);
+    })();
+
     chrome.identity.getProfileUserInfo(async (user: chrome.identity.UserInfo) => {
       setUserEmail(user.email);
       getUserId(user.email)
@@ -72,15 +73,10 @@ export const Home = () => {
   }
   const fabStyling = {position: 'absolute', right: '24px', bottom:'24px'};
 
-  useEffect(() => {
-    fetchImage();
-    fetchAdvice();
-  }, []);
-
   return (
     <AppContext.Provider value={{userId:userId, userEmail:userEmail}}>
     {pic && advice &&
-      <div className="App fade-in-image" style={{backgroundImage: `url(${pic.urls.full})`}}>
+      <div className="App fade-in-image" style={{backgroundImage: `url(${pic})`}}>
         <div className="text-container">
           <h1 className="text">
             {advice}

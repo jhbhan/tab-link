@@ -7,7 +7,7 @@ export const fetchImage = async () => {
       `https://api.unsplash.com/photos/random?collections=${collectionId}&client_id=${unsplashKey}&w=1920&h=1080&crop=entropy&fit=crop&auto=format&q=70&fm=jpg`
     );
     const dataJ = await data.json();
-    return dataJ;
+    return dataJ.urls.regular;
   };
   
 const adviceUrl = "https://api.adviceslip.com/advice";
