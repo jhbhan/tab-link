@@ -17,13 +17,6 @@ export const AddLink: React.FunctionComponent<AddLinkProps> = (props: AddLinkPro
   const [values, setValues] = React.useState<string[]>([]);
   const [currValue, setCurrValue] = React.useState<string>('');
 
-  const handleKeyUp = (e: any) => {
-    if (e.keyCode == 32) {
-      setValues((oldState) => [...oldState, e.target.value.replace(' ','')]);
-      setCurrValue('');
-    }
-  };
-
   const handleChange = (e: any) => {
     setCurrValue(e.target.value);
   };
@@ -64,7 +57,6 @@ export const AddLink: React.FunctionComponent<AddLinkProps> = (props: AddLinkPro
         <Input
           value={currValue}
           onChange={handleChange}
-          onKeyDown={handleKeyUp}
         />
       </FormControl>
     </DialogContent>
